@@ -7,6 +7,13 @@ switched on and set from a **Quick Settings tile**.
 Made for a tablet mirroring to a Fire TV, where even at full volume the TV
 gets the sound too quietly.
 
+## Download
+
+Get the APK from [**Releases**](../../releases/latest), open it on the tablet,
+and allow installing from that source when Android asks. (It's a debug-signed
+sideload build, not a Play Store app, so Play Protect may warn: choose
+*Install anyway*.) Then add the tile (below) and tap it.
+
 ## Use
 
 Swipe down from the top of the screen and tap **Gain Boost**. A small window
