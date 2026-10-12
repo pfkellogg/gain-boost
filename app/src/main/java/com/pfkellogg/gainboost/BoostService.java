@@ -15,6 +15,7 @@ import android.media.AudioDeviceInfo;
 import android.media.AudioManager;
 import android.media.audiofx.AudioEffect;
 import android.media.audiofx.LoudnessEnhancer;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -49,8 +50,11 @@ public final class BoostService extends Service {
     /** Output changes come in bursts and take a moment to settle. */
     private static final long REATTACH_MS = 1500;
 
-    static void start(Context ctx) {
-        ctx.startForegroundService(new Intent(ctx, BoostService.class));
+    /** False if the system skipped it (some tablets' battery managers do, from a tile). */
+    static boolean start(Context ctx) {
+        Intent i = new Intent(ctx, BoostService.class);
+        return (Build.VERSION.SDK_INT >= 26 ? ctx.startForegroundService(i)
+                : ctx.startService(i)) != null;  // Android 7 (Fire TV Stick)
     }
 
     static int savedDb(Context ctx) {
@@ -71,7 +75,8 @@ public final class BoostService extends Service {
         super.onCreate();
         IntentFilter f = new IntentFilter(AudioEffect.ACTION_OPEN_AUDIO_EFFECT_CONTROL_SESSION);
         f.addAction(AudioEffect.ACTION_CLOSE_AUDIO_EFFECT_CONTROL_SESSION);
-        registerReceiver(announced, f, Context.RECEIVER_EXPORTED);
+        if (Build.VERSION.SDK_INT >= 26) registerReceiver(announced, f, Context.RECEIVER_EXPORTED);
+        else registerReceiver(announced, f);
         getSystemService(DisplayManager.class).registerDisplayListener(displays, ui);
         getSystemService(AudioManager.class).registerAudioDeviceCallback(devices, ui);
         gainMb = savedDb(this) * 100;
@@ -202,13 +207,20 @@ public final class BoostService extends Service {
     }
 
     private Notification notification() {
-        NotificationManager nm = getSystemService(NotificationManager.class);
-        nm.createNotificationChannel(new NotificationChannel("boost", "Gain Boost", NotificationManager.IMPORTANCE_LOW));
+        Notification.Builder b;
+        if (Build.VERSION.SDK_INT >= 26) {
+            getSystemService(NotificationManager.class).createNotificationChannel(
+                    new NotificationChannel("boost", "Gain Boost", NotificationManager.IMPORTANCE_LOW));
+            b = new Notification.Builder(this, "boost");
+        } else {
+            b = new Notification.Builder(this);
+        }
         PendingIntent open = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), PendingIntent.FLAG_IMMUTABLE);
-        return new Notification.Builder(this, "boost")
+        return b
                 .setSmallIcon(android.R.drawable.ic_lock_silent_mode_off)
                 .setContentTitle("Gain Boost on: +" + gainMb / 100 + " dB")
-                .setContentText("Change it from the Gain Boost tile: swipe down from the top")
+                .setContentText(MainActivity.isTv(this) ? "Change it in the Gain Boost app"
+                        : "Change it from the Gain Boost tile: swipe down from the top")
                 .setContentIntent(open)
                 .setOngoing(true)
                 .build();

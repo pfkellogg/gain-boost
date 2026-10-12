@@ -5,7 +5,12 @@ everything it plays (YouTube, KaraFun, music apps, and screen mirroring to a TV)
 switched on and set from a **Quick Settings tile**.
 
 Made for a tablet mirroring to a Fire TV, where even at full volume the TV
-gets the sound too quietly.
+gets the sound too quietly. It also runs on a **Fire TV / Android TV**
+(Android 7.1 and up): install the **-firetv** APK there, open **Gain Boost**
+from Your Apps and set it with the remote (Down to the slider, Left / Right
+for the gain). It has its own app ID (`com.pfkellogg.gainboost.firetv`)
+because Fire OS saves a sideloaded app's "Your Apps" tile picture only once
+per ID.
 
 ## Download
 
