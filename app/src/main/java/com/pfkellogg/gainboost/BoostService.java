@@ -37,7 +37,7 @@ import android.util.SparseArray;
 public final class BoostService extends Service {
 
     private static final String TAG = "GainBoost";
-    static final int MAX_DB = 24, DEFAULT_DB = 12;
+    static final int MAX_DB = 48, DEFAULT_DB = 12;
     /** What the tile shows. */
     static volatile boolean running;
     private static BoostService instance;

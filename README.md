@@ -1,6 +1,6 @@
 # Gain Boost
 
-Make an Android tablet louder than its volume buttons go: up to **+24 dB** on
+Make an Android tablet louder than its volume buttons go: up to **+48 dB** on
 everything it plays (YouTube, KaraFun, music apps, and screen mirroring to a TV),
 switched on and set from a **Quick Settings tile**.
 
@@ -29,8 +29,8 @@ Swipe down from the top of the screen and tap **Gain Boost**. A small window
 opens over whatever is playing (YouTube keeps playing):
 
 - **Boost on**: switches the boost on or off.
-- **Slider**: 0 to +24 dB, applied as you move it. +12 dB is 4× the level
-  (the default), +24 dB is 16×.
+- **Slider**: 0 to +48 dB, applied as you move it. +12 dB is 4× the level
+  (the default), +24 dB is 16×, +48 dB is 256×. At high settings the limiter holds loud parts back, so quiet songs gain the most.
 - **Done**: closes the window.
 
 The tile shows the gain when the boost is on ("+12 dB") and "Off" when it isn't.
@@ -45,7 +45,7 @@ On a Google TV / Android TV, press **Mute twice quickly** on the remote, in
 any app. The two presses cancel out on the TV, and the Gain Boost window comes
 up over what's playing without stopping it (KaraFun, YouTube):
 
-- **Left / Right**: gain down / up, 1 dB a press (turning it up also switches
+- **Left / Right**: gain down / up, 1 dB a press (0 to +48 dB) (turning it up also switches
   the boost on).
 - **OK**: boost on / off.
 - **Back** (or Up / Down): closes it. It also closes by itself after 8 seconds.

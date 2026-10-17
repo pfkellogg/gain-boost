@@ -12,7 +12,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 /**
- * The Gain Boost window: on / off and the gain slider, 0 to +24 dB. Opened by
+ * The Gain Boost window: on / off and the gain slider, 0 to +48 dB. Opened by
  * the Quick Settings tile on a tablet and by the app itself on a TV, where the
  * remote moves between them (left / right on the slider changes the gain).
  */
@@ -102,7 +102,7 @@ final class Controls {
     }
 
     private static String label(int db) {
-        return "+" + db + " dB" + (db == 12 ? "  (4×)" : db == 24 ? "  (16×)" : "");
+        return "+" + db + " dB" + (db == 12 ? "  (4×)" : db == 24 ? "  (16×)" : db == 48 ? "  (256×)" : "");
     }
 
     private static int dp(Context ctx, int v) {
