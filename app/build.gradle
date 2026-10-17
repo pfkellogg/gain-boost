@@ -10,8 +10,8 @@ android {
         applicationId "com.pfkellogg.gainboost"
         minSdk 25
         targetSdk 34
-        versionCode 5
-        versionName "1.4"
+        versionCode 6
+        versionName "1.5"
     }
 
     // Same app; the Fire TV build has its own ID because Fire OS saves the

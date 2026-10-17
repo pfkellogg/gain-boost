@@ -16,6 +16,7 @@ import android.os.Bundle;
  */
 public final class MainActivity extends Activity {
 
+
     static boolean isTv(Context ctx) {
         return ctx.getSystemService(UiModeManager.class).getCurrentModeType() == Configuration.UI_MODE_TYPE_TELEVISION
                 || ctx.getPackageManager().hasSystemFeature("amazon.hardware.fire_tv");
@@ -42,7 +43,10 @@ public final class MainActivity extends Activity {
             finish();
             return;
         }
-        AlertDialog d = Controls.dialog(this, true, () -> BoostService.start(this));
+        AlertDialog d = Controls.dialog(this, true, () -> BoostService.start(this),
+                HotKey.enabled(this) ? "Hot key: press Mute twice quickly, in any app"
+                        : !getPackageManager().hasSystemFeature("amazon.hardware.fire_tv") ?  // Fire OS: no accessibility services
+                        "For a hot key (Mute twice), turn on Gain Boost in Settings > Accessibility" : null);
         d.setOnDismissListener(x -> finish());
         d.show();
     }

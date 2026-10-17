@@ -18,14 +18,18 @@ import android.widget.TextView;
  */
 final class Controls {
 
+    /** Tags on the switch and the slider, for the hot key to find them. */
+    static final String ON = "on", GAIN = "gain";
+
     private Controls() {
     }
 
     /**
      * isOn: what the switch shows at first. turnOn starts the boost; how
-     * depends on who opened the window.
+     * depends on who opened the window. hint: a line of small text under the
+     * slider, or null.
      */
-    static AlertDialog dialog(Context ctx, boolean isOn, Runnable turnOn) {
+    static AlertDialog dialog(Context ctx, boolean isOn, Runnable turnOn, String hint) {
         AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
         Context c = builder.getContext();  // the dialog's theme, so text colours match it
         int pad = dp(ctx, 24);
@@ -37,6 +41,7 @@ final class Controls {
         on.setText("Boost on");
         on.setTextSize(20);
         on.setChecked(isOn);
+        on.setTag(ON);
         box.addView(on);
 
         TextView gain = new TextView(c);
@@ -57,7 +62,16 @@ final class Controls {
         bar.setMax(BoostService.MAX_DB);
         bar.setKeyProgressIncrement(1);
         bar.setProgress(BoostService.savedDb(ctx));
+        bar.setTag(GAIN);
         box.addView(bar, new LinearLayout.LayoutParams(dp(ctx, 360), dp(ctx, 56)));
+        if (hint != null) {
+            TextView h = new TextView(c);
+            h.setText(hint);
+            h.setTextSize(14);
+            h.setGravity(Gravity.CENTER);
+            if (primary != null) h.setTextColor(primary.withAlpha(0xb0));
+            box.addView(h);
+        }
         gain.setText(label(bar.getProgress()));
 
         bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {

@@ -39,7 +39,7 @@ public final class BoostTile extends TileService {
                         new Intent(this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                         PendingIntent.FLAG_IMMUTABLE));
             }
-        }));
+        }, null));
     }
 
     private void update() {

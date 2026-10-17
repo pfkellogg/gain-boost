@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hot_key_description">Press Mute twice quickly, in any app, to bring up the Gain Boost window over what\'s playing. Gain Boost only watches for that; it reads nothing on the screen.</string>
+</resources>

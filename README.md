@@ -12,6 +12,10 @@ for the gain). It has its own app ID (`com.pfkellogg.gainboost.firetv`)
 because Fire OS saves a sideloaded app's "Your Apps" tile picture only once
 per ID.
 
+On a **Google TV / Android TV** (such as an onn. stick) there's also a
+**hot key**: press **Mute twice quickly**, in any app, and the Gain Boost
+window comes up over what's playing (see [TV hot key](#tv-hot-key)).
+
 ## Download
 
 Get the APK from [**Releases**](../../releases/latest), open it on the tablet,
@@ -34,6 +38,31 @@ Opening **Gain Boost** from the app list just turns the boost on.
 
 While it's on, a "Gain Boost on" notification stays up: Android only keeps the
 boost running while the app runs in the foreground.
+
+### TV hot key
+
+On a Google TV / Android TV, press **Mute twice quickly** on the remote, in
+any app. The two presses cancel out on the TV, and the Gain Boost window comes
+up over what's playing without stopping it (KaraFun, YouTube):
+
+- **Left / Right**: gain down / up, 1 dB a press (turning it up also switches
+  the boost on).
+- **OK**: boost on / off.
+- **Back** (or Up / Down): closes it. It also closes by itself after 8 seconds.
+
+The hot key is an accessibility service, the only way an app sees the remote's
+keys in every app. Turn it on once in **Settings > Accessibility > Gain Boost
+hot key**; for a sideloaded app Android may grey that out as a "restricted
+setting", so over adb is easier:
+
+```
+adb shell settings put secure enabled_accessibility_services com.pfkellogg.gainboost/com.pfkellogg.gainboost.HotKey
+adb shell settings put secure accessibility_enabled 1
+```
+
+It only watches for the Mute double press (and, while its window is up, the
+keys above); it reads nothing on the screen. Fire OS doesn't allow
+accessibility services, so there's no hot key on a Fire TV.
 
 ### Adding the tile
 
@@ -63,10 +92,13 @@ squashed.
 | File | What's in it |
 |---|---|
 | `BoostService.java` | Foreground service holding the effects; re-attaches them when the output changes |
-| `BoostTile.java` | Quick Settings tile and its on / off + slider window |
-| `MainActivity.java` | The app icon: turns the boost on and closes |
+| `BoostTile.java` | Quick Settings tile |
+| `Controls.java` | The on / off + slider window, shared by the tile, the TV app and the hot key |
+| `HotKey.java` | TV hot key: Mute twice opens the window over any app; the remote's keys work it |
+| `MainActivity.java` | The app icon: turns the boost on (on a TV, and shows the window) |
 
-Plain Java, no dependencies; `minSdk 26`. Tested on an Android 16 tablet.
+Plain Java, no dependencies; `minSdk 25`. Tested on an Android 16 tablet, a
+Fire TV Stick 4K (Fire OS 6) and an onn. Full HD stick (Google TV, Android 14).
 
 ## Build and install
 
@@ -74,7 +106,8 @@ Needs JDK 17+ and the Android SDK (platform 34):
 
 ```
 ./gradlew assembleDebug
-adb install -r app/build/outputs/apk/debug/app-debug.apk
+adb install -r app/build/outputs/apk/standard/debug/app-standard-debug.apk   # tablet, Google TV
+adb install -r app/build/outputs/apk/firetv/debug/app-firetv-debug.apk       # Fire TV
 ```
 
 ## License
